@@ -52,7 +52,7 @@ public class CustomerController {
 
     @GetMapping("/by-email")
     public ResponseEntity<Customer> getCustomerByEmail(@RequestParam String email) {
-        if (email == null) {
+        if (email.isBlank()) {
             throw new InvalidParamsException("Customer Email must be provided");
         }
         return ResponseEntity.ok(service.getCustomerByEmail(email));

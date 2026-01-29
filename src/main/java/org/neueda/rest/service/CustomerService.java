@@ -1,6 +1,7 @@
 package org.neueda.rest.service;
 
 import org.neueda.rest.entity.Customer;
+import org.neueda.rest.exception.CustomerNotFoundException;
 import org.neueda.rest.repo.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,10 @@ public class CustomerService {
         return  repo.findAll();
     }
     public Customer getCustomerById(Integer id){
-        return  repo.findById(id).orElseThrow(()-> new RuntimeException("Customer Not Found"));
+//        return  repo.findById(id).orElseThrow(()-> new RuntimeException("Customer Not Found"));
+        return  repo.findById(id).orElseThrow(()-> new CustomerNotFoundException("Customer Not Found with Id: "+id));
     }
+
     public void deleteCustomer(Integer id){
         repo.deleteById(id);
     }
@@ -29,6 +32,6 @@ public class CustomerService {
     public Customer getCustomerByEmail(String email) {
         return repo
                 .findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Customer not found with email: " + email));
+                .orElseThrow(() -> new CustomerNotFoundException("Customer not found with email: " + email));
     }
 }
