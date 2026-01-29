@@ -39,6 +39,21 @@ public Customer getCustomerByEmail(String email) {
 ```
 - Check From PostMan and try to find by id or email which is not available
 
+## implementing Swagger UI
+- Add below dependencies in your pom.xml
+```xml
+<!-- Source: https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui -->
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+    <version>3.0.1</version>
+    <scope>compile</scope>
+</dependency>
+```
+- After Adding Dependency Run your Application
+- Open Browser and hit below URL
+- http://localhost:8082/swagger-ui.html
+
 ## Implementing Profiles
 
 - created multiple profiles
