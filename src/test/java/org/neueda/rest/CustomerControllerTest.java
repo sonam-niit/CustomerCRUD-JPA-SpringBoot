@@ -1,6 +1,7 @@
 package org.neueda.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.neueda.rest.entity.Customer;
 import org.neueda.rest.repo.CustomerRepo;
@@ -42,51 +43,51 @@ public class CustomerControllerTest {
     }
 
     @Test
-    void testCreateItem() throws Exception {
+    void testCreateCustomer() throws Exception {
         Customer item = new Customer("Alexa", "alexa@microsoft.com");
         String json = objectMapper.writeValueAsString(item);
         mockMvc.perform(post("/api/v1/customers/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("CreatedItem"));
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name").value("Alexa"));
     }
-//
-//    @Test
-//    void testUpdateItem() throws Exception {
-//        Item item = itemRepository.save(new Item("OldName", 1.99));
-//        Item update = new Item("UpdatedName", 2.99);
-//        String json = objectMapper.writeValueAsString(update);
-//        mockMvc.perform(put("/items/" + item.getId())
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(json))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.name").value("UpdatedName"));
-//    }
-//
-//    @Test
-//    void testDeleteItem() throws Exception {
-//        Item item = itemRepository.save(new Item("ToDelete", 0.99));
-//        mockMvc.perform(delete("/items/" + item.getId()))
-//                .andExpect(status().isNoContent());
-//        Assertions.assertFalse(itemRepository.findById(item.getId()).isPresent());
-//    }
-//
-//    @Test
-//    void testGetItemById_NotFound() throws Exception {
-//        mockMvc.perform(get("/items/99999"))
-//                .andExpect(status().isNotFound())
-//                .andExpect(content().string(org.hamcrest.Matchers.containsString("not found")));
-//    }
-//
-//    @Test
-//    void testCreateItem_InvalidParams() throws Exception {
-//        Item item = new Item(null, 0);
-//        String json = objectMapper.writeValueAsString(item);
-//        mockMvc.perform(post("/items")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(json))
-//                .andExpect(status().isBadRequest())
-//                .andExpect(content().string(org.hamcrest.Matchers.containsString("must be provided")));
-//    }
+
+    @Test
+    void testUpdateCustomer() throws Exception {
+        Customer customer = customerRepo.save(new Customer("Alexa", "alexa@gmail.com"));
+        Customer update = new Customer("Alexander", "alexa@gmail.com");
+        String json = objectMapper.writeValueAsString(update);
+        mockMvc.perform(put("/api/v1/customers/" + customer.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Alexander"));
+    }
+
+    @Test
+    void testDeleteCustomer() throws Exception {
+        Customer customer = customerRepo.save(new Customer("TestUser", "test@gmail.com"));
+        mockMvc.perform(delete("/api/v1/customers/" + customer.getId()))
+                .andExpect(status().isNoContent());
+        Assertions.assertFalse(customerRepo.findById(customer.getId()).isPresent());
+    }
+
+    @Test
+    void testGetCustomerById_NotFound() throws Exception {
+        mockMvc.perform(get("/api/v1/customers/99999"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Not Found")));
+    }
+
+    @Test
+    void testCreateCustomer_InvalidParams() throws Exception {
+        Customer item = new Customer(null, null);
+        String json = objectMapper.writeValueAsString(item);
+        mockMvc.perform(post("/api/v1/customers/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("must be provided")));
+    }
 }
