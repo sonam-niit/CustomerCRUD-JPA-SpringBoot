@@ -6,10 +6,12 @@ import org.neueda.rest.entity.Customer;
 import org.neueda.rest.repo.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+
 import java.util.List;
 import java.util.Optional;
 
-@DataJpaTest
+@SpringBootTest
 public class CustomerRepositoryTest {
 
     @Autowired
@@ -42,10 +44,10 @@ public class CustomerRepositoryTest {
 
     @Test
     void testSave() {
-        Customer newCustomer = new Customer("Sonam Soni", "sonam@gmail.com");
+        Customer newCustomer = new Customer("Alexa", "alex@gmail.com");
         Customer saved = customerRepository.save(newCustomer);
         Assertions.assertNotNull(saved.getId(), "Saved customer should have an id");
-        Assertions.assertEquals("Sonam Soni", saved.getName());
+        Assertions.assertEquals("Alexa", saved.getName());
     }
 
     @Test
