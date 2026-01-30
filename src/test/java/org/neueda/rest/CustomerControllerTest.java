@@ -6,7 +6,8 @@ import org.neueda.rest.entity.Customer;
 import org.neueda.rest.repo.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -19,8 +20,8 @@ public class CustomerControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-//    @Autowired
-//    private ObjectMapper objectMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     private CustomerRepo customerRepo;
@@ -40,16 +41,16 @@ public class CustomerControllerTest {
                 .andExpect(jsonPath("$.name").value("Devid"));
     }
 
-//    @Test
-//    void testCreateItem() throws Exception {
-//        Item item = new Item("CreatedItem", 3.99);
-//        String json = objectMapper.writeValueAsString(item);
-//        mockMvc.perform(post("/items")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(json))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.name").value("CreatedItem"));
-//    }
+    @Test
+    void testCreateItem() throws Exception {
+        Customer item = new Customer("Alexa", "alexa@microsoft.com");
+        String json = objectMapper.writeValueAsString(item);
+        mockMvc.perform(post("/api/v1/customers/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("CreatedItem"));
+    }
 //
 //    @Test
 //    void testUpdateItem() throws Exception {
