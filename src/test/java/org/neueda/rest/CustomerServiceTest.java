@@ -57,35 +57,35 @@ public class CustomerServiceTest {
         Customer saved = customerService.save(toSave);
         Assertions.assertEquals("Krizel", saved.getName());
     }
-//
-//    @Test
-//    void testUpdateItem_found() {
-//        Item existing = new Item("Apple", 0.99);
-//        Item update = new Item("Green Apple", 1.09);
-//        Mockito.when(itemRepository.findById(1L)).thenReturn(Optional.of(existing));
-//        Mockito.when(itemRepository.save(existing)).thenReturn(existing);
-//        Item updated = itemService.updateItem(1L, update);
-//        Assertions.assertEquals("Green Apple", updated.getName());
-//        Assertions.assertEquals(1.09, updated.getPrice());
-//    }
-//
-//    @Test
-//    void testUpdateItem_notFound() {
-//        Item update = new Item("Green Apple", 1.09);
-//        Mockito.when(itemRepository.findById(2L)).thenReturn(Optional.empty());
-//        Assertions.assertThrows(ItemNotFoundException.class, () -> itemService.updateItem(2L, update));
-//    }
-//
-//    @Test
-//    void testDeleteItem_found() {
-//        Mockito.when(itemRepository.existsById(1L)).thenReturn(true);
-//        Assertions.assertDoesNotThrow(() -> itemService.deleteItem(1L));
-//        Mockito.verify(itemRepository).deleteById(1L);
-//    }
-//
-//    @Test
-//    void testDeleteItem_notFound() {
-//        Mockito.when(itemRepository.existsById(2L)).thenReturn(false);
-//        Assertions.assertThrows(ItemNotFoundException.class, () -> itemService.deleteItem(2L));
-//    }
+
+    @Test
+    void testUpdateCustomer_found() {
+        Customer existing = new Customer("Nikuj", "nick@gmail.com");
+        Customer update = new Customer("Nick Tod", "nick@microsoft.com");
+        Mockito.when(customerRepo.findById(1)).thenReturn(Optional.of(existing));
+        Mockito.when(customerRepo.save(existing)).thenReturn(existing);
+        Customer updated = customerService.updateCustomer(1, update);
+        Assertions.assertEquals("Nick Tod", updated.getName());
+        Assertions.assertEquals("nick@microsoft.com", updated.getEmail());
+    }
+
+    @Test
+    void testUpdateCustomer_notFound() {
+        Customer update = new Customer("User1", "user@gmail.com");
+        Mockito.when(customerRepo.findById(2)).thenReturn(Optional.empty());
+        Assertions.assertThrows(CustomerNotFoundException.class, () -> customerService.updateCustomer(2, update));
+    }
+
+    @Test
+    void testDeleteCustomer_found() {
+        Mockito.when(customerRepo.existsById(1)).thenReturn(true);
+        Assertions.assertDoesNotThrow(() -> customerService.deleteCustomer(1));
+        Mockito.verify(customerRepo).deleteById(1);
+    }
+
+    @Test
+    void testDeleteCustomer_notFound() {
+        Mockito.when(customerRepo.existsById(2)).thenReturn(false);
+        Assertions.assertThrows(CustomerNotFoundException.class, () -> customerService.deleteCustomer(2));
+    }
 }

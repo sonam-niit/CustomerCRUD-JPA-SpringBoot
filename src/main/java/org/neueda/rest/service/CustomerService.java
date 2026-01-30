@@ -20,12 +20,14 @@ public class CustomerService {
         return  repo.findAll();
     }
     public Customer getCustomerById(Integer id){
-//        return  repo.findById(id).orElseThrow(()-> new RuntimeException("Customer Not Found"));
         return  repo.findById(id).orElseThrow(()-> new CustomerNotFoundException("Customer Not Found with Id: "+id));
     }
 
     public void deleteCustomer(Integer id){
-        repo.deleteById(id);
+            if (!repo.existsById(id)) {
+                throw new CustomerNotFoundException("Customer with id " + id + " not found");
+            }
+            repo.deleteById(id);
     }
     //update by id--> we will use Save Method only
 
@@ -33,5 +35,15 @@ public class CustomerService {
         return repo
                 .findByEmail(email)
                 .orElseThrow(() -> new CustomerNotFoundException("Customer not found with email: " + email));
+    }
+
+    public Customer updateCustomer(Integer id, Customer updated) {
+        return repo.findById(id)
+                .map(existingItem -> {
+                    existingItem.setName(updated.getName());
+                    existingItem.setEmail(updated.getEmail());
+                    return repo.save(existingItem);
+                })
+                .orElseThrow(() -> new CustomerNotFoundException("Customer with id " + id + " not found"));
     }
 }
